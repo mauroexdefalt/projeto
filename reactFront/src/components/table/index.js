@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,6 +6,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+import AlertDialog from '../dialog';
 
 
 export default function DenseTable({ data }) {
@@ -13,6 +15,7 @@ export default function DenseTable({ data }) {
 
     const [headers, setHeaders] = React.useState([]);
     const [rows, setRows] = React.useState([]);
+    const [openModal,setOpenModal] = useState(false)
 
 
 
@@ -27,11 +30,16 @@ export default function DenseTable({ data }) {
             setRows(data)
         }
 
-
-
-
-
     }, [data])
+
+
+    function OpenModal(){
+        setOpenModal(true);
+    }
+
+    function CloseModal(){
+        setOpenModal(false);
+    }
 
 
 
@@ -62,11 +70,14 @@ export default function DenseTable({ data }) {
                             <TableCell align="left">{row.state}</TableCell>
                             <TableCell align="left">{row.brand}</TableCell>
                             <TableCell align="left">{row.create_at}</TableCell>
-                            <TableCell align="left">acoes</TableCell>
+                            <TableCell align="left">
+                                <Button onClick={()=>{setOpenModal(true)}} variant="contained" >Editar</Button>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
+            <AlertDialog open={openModal} CloseModal={CloseModal}/>
         </TableContainer>
     );
 }
