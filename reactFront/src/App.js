@@ -9,22 +9,9 @@ import axios from 'axios';
 import CircularIndeterminate from './components/load/index.js';
 import BasicAlerts from './components/alert/index.js';
 import { useNavigate  } from 'react-router-dom';
+import { theme } from '../src/components/themeProvider/themeProvider.js';
 
-const theme = createTheme({
-  status: {
-    danger: '#e53e3e',
-  },
-  palette: {
-    primary: {
-      main: '#000000',
-      darker: '#053e85',
-    },
-    neutral: {
-      main: '#64748B',
-      contrastText: '#fff',
-    },
-  },
-});
+
 
 function App() {
   let navigate = useNavigate();

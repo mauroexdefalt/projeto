@@ -26,8 +26,8 @@ urlpatterns = [
     path('api/v1/' , include('dafiti.urls')),
     path('token/',TokenObtainPairView.as_view()),
     path('refresh/',TokenRefreshView.as_view()),
-    # path('auth/', include('rest_framework.urls')),
+    path('auth/', include('rest_framework.urls')),
     # path('cloath/',CloathsApiView.as_view()),
-    # path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     # path('',include(route.urls))
 ]

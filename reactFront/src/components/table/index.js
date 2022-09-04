@@ -7,19 +7,49 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import EditIcon from '@mui/icons-material/Edit';
 import AlertDialog from '../dialog';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { theme } from '../themeProvider/themeProvider';
 
 
-export default function DenseTable({ data }) {
-
+export default function DenseTable({ data , updateTable  }) { 
 
     const [headers, setHeaders] = React.useState([]);
     const [rows, setRows] = React.useState([]);
-    const [openModal,setOpenModal] = useState(false)
+    const [openModal,setOpenModal] = useState({open:false,type:'',data:{}})
+
+
+    const HeaderTitle = {
+
+        id_clothe: 'ID',
+        title: 'Título',	
+        size: 'Tamanho',	
+        state: 'Estado',	
+        brand: 'Marca',
+        create_at: 'Data de criação',	
+
+    }
 
 
 
-    console.log('dentro da tabela', data);
+    function Edit(id){
+        const data = rows.filter((item)=> item.id_clothe === id)        
+        setOpenModal({open:true,type:'edit',data:data[0]})
+    }
+
+
+    function Delete(id){
+        const data = rows.filter((item)=> item.id_clothe === id)      
+        setOpenModal({open:true,type:'delete',data:data[0]})
+    }
+
+
+  
+
+
+  
 
 
     useEffect(() => {
@@ -38,7 +68,7 @@ export default function DenseTable({ data }) {
     }
 
     function CloseModal(){
-        setOpenModal(false);
+        setOpenModal({...openModal,open:false});
     }
 
 
@@ -48,13 +78,14 @@ export default function DenseTable({ data }) {
 
     return (
         <TableContainer component={Paper}>
+             
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                 <TableHead>
                     <TableRow>
                         {headers.map((header) => {
-                            return <TableCell align="left">{header}</TableCell>
+                            return <TableCell key={header} align="left" style={{fontWeight:'bold'}}>{HeaderTitle[header]}</TableCell>
                         })}
-                        <TableCell align="left">Acoes</TableCell>
+                        <TableCell align="left" style={{fontWeight:'bold'}}>Ações</TableCell>
 
                     </TableRow>
                 </TableHead>
@@ -71,13 +102,16 @@ export default function DenseTable({ data }) {
                             <TableCell align="left">{row.brand}</TableCell>
                             <TableCell align="left">{row.create_at}</TableCell>
                             <TableCell align="left">
-                                <Button onClick={()=>{setOpenModal(true)}} variant="contained" >Editar</Button>
+                                <ThemeProvider  theme={theme}>
+                                    <Button onClick={()=>{Edit(row.id_clothe)}} style={{margin:'2px'}} variant="contained" ><EditIcon/></Button>
+                                    <Button onClick={()=>{Delete(row.id_clothe)}} style={{margin:'2px'}} variant="contained" ><DeleteIcon/></Button>
+                                </ThemeProvider>
                             </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
-            <AlertDialog open={openModal} CloseModal={CloseModal}/>
+            <AlertDialog open={openModal} CloseModal={CloseModal} updateTable={updateTable}/>
         </TableContainer>
     );
 }

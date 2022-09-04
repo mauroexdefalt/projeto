@@ -12,6 +12,7 @@ class CloathsApiView(APIView):
         return Response(data)
     
     def post(self, request):
+        print(request)
         clothes = ClothesSerialiazer(data=request.data)
         if clothes.is_valid():
             clothes.save()
@@ -19,13 +20,15 @@ class CloathsApiView(APIView):
         else:
             return Response(clothes.errors, status=400)
         
-    def delete(self, request):
-       clothes = Clothes.objects.get(pk=request.data['id'])
-       clothes.delete()
-       return Response(status=204)
+    def delete(self, request):    
+        clothes = Clothes.objects.get(pk=request.data['id_clothe'])
+        clothes.delete()
+        return Response(status=204)
+    
    
-    def update(self,request):
-        clothes = Clothes.objects.get(pk=request.data['id'])
+   
+    def put(self,request):
+        clothes = Clothes.objects.get(pk=request.data['id_clothe'])
         clothes.title = request.data['title']
         clothes.size = request.data['size']
         clothes.state = request.data['state']
