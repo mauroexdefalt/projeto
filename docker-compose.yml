@@ -8,3 +8,21 @@ services:
       - '3000:80'
     volumes:
       - ./reactFront:/frontend
+  django-app:   
+      build: 
+        context: .
+        dockerfile: './djangoBack/Dockerfile'
+      command: python manage.py runserver 0.0.0.0:8000
+      volumes:
+        - .:/code
+      ports:
+        - "8000:8000"
+    # build:
+    #   context: .
+    #   dockerfile: './djangoCrud/Dockerfile'
+    # ports:
+    #   - '8000:3001'
+    # volumes:
+    #   - ./djangoCrud:/backend
+    # depends_on:
+    #   - my-app    
